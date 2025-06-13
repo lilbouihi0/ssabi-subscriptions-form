@@ -70,7 +70,7 @@ export const products: Product[] = [
       "Multi-device support",
       "Download for offline viewing"
     ],
-    image: "https://shahid.mbc.net/mediaObject/shahidlogo/light/Shahid_logo_light/original/Shahid_logo_light.png?height=178&width=auto&croppingPoint=mc&type=webp",
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Mbc_Shahid_logo.svg",
     category: "streaming"
   },
   {
@@ -90,7 +90,7 @@ export const products: Product[] = [
       "Free shipping",
       "Prime Reading"
     ],
-    image: "https://m.media-amazon.com/images/G/01/digital/video/acquisition/logo/pv_logo_white._CB548637580_.png",
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg",
     category: "streaming"
   }
 ];
