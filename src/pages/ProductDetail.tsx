@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -82,25 +83,34 @@ const ProductDetail = () => {
 
     setIsSubmitting(true);
     
-    // Simulate Google Sheets submission
     try {
-      console.log('Submitting order:', {
-        product: product.name,
-        provider: product.provider,
+      const payload = {
+        productName: product.name,
         duration: formData.selectedDuration,
-        customerName: formData.fullName,
-        phoneNumber: formData.phoneNumber,
-        email: formData.email,
-        timestamp: new Date().toISOString()
+        fullName: formData.fullName,
+        phone: formData.phoneNumber,
+        email: formData.email
+      };
+
+      console.log('Submitting order to Google Sheets:', payload);
+      
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzpAjrdd2CVK6e-qC5noIH1OJZnGrJYcImoWqzWSYCeKHRWQkJbl8OieCgBTHGxLvY/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
       });
       
-      // Here you would integrate with Google Sheets API or webhook
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Navigate to thank you page instead of showing toast
-      navigate('/thank-you');
+      if (response.ok) {
+        console.log('Order submitted successfully');
+        navigate('/thank-you');
+      } else {
+        throw new Error('Failed to submit order');
+      }
       
     } catch (error) {
+      console.error('Error submitting order:', error);
       toast({
         title: "Error",
         description: "Failed to submit order. Please try again.",
