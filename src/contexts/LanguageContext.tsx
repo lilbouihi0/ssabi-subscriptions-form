@@ -35,10 +35,13 @@ const translations = {
     email: 'البريد الإلكتروني',
     emailOptional: 'البريد الإلكتروني (اختياري)',
     submitOrder: 'أرسل الطلب',
+    similarProducts: 'منتجات مماثلة',
     
     // Success messages
     orderSuccess: 'تم إرسال طلبك بنجاح!',
     orderSuccessDesc: 'سنتواصل معك قريباً لتأكيد الطلب',
+    backToHome: 'العودة للرئيسية', 
+    goBack: 'رجوع',
     
     // Validation
     nameRequired: 'الاسم مطلوب',
@@ -73,10 +76,13 @@ const translations = {
     email: 'Adresse e-mail',
     emailOptional: 'Adresse e-mail (optionnel)',
     submitOrder: 'Envoyer la demande',
+    similarProducts: 'Produits similaires',
     
     // Success messages
     orderSuccess: 'Votre commande a été envoyée avec succès!',
     orderSuccessDesc: 'Nous vous contacterons bientôt pour confirmer votre commande',
+    backToHome: 'Retour à l\'accueil',
+    goBack: 'Retour',
     
     // Validation
     nameRequired: 'Le nom est requis',
