@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -83,23 +84,27 @@ const ProductDetail = () => {
     setIsSubmitting(true);
     
     try {
-      const payload = {
+      // Create a more structured payload for Google Sheets
+      const formDataToSend = new FormData();
+      formDataToSend.append('productName', product.name);
+      formDataToSend.append('duration', formData.selectedDuration);
+      formDataToSend.append('fullName', formData.fullName);
+      formDataToSend.append('phoneNumber', formData.phoneNumber);
+      formDataToSend.append('email', formData.email || '');
+      formDataToSend.append('timestamp', new Date().toISOString());
+
+      console.log('Submitting order to Google Sheets:', {
         productName: product.name,
         duration: formData.selectedDuration,
         fullName: formData.fullName,
-        phone: formData.phoneNumber,
+        phoneNumber: formData.phoneNumber,
         email: formData.email
-      };
-
-      console.log('Submitting order to Google Sheets:', payload);
+      });
       
       const response = await fetch('https://script.google.com/macros/s/AKfycbzpAjrdd2CVK6e-qC5noIH1OJZnGrJYcImoWqzWSYCeKHRWQkJbl8OieCgBTHGxLvY/exec', {
         method: 'POST',
         mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
+        body: formDataToSend
       });
       
       // With no-cors mode, we can't check response status, so we assume success
