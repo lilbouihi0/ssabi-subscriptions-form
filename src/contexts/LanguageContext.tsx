@@ -24,6 +24,8 @@ const translations = {
     viewMore: 'عرض المزيد',
     from: 'ابتداءً من',
     mad: 'درهم',
+    support: 'الدعم',
+    delivery: 'التوصيل السريع',
     
     // Product page
     duration: 'مدة الاشتراك',
@@ -65,6 +67,8 @@ const translations = {
     viewMore: 'Voir plus',
     from: 'À partir de',
     mad: 'MAD',
+    support: 'Support',
+    delivery: 'Livraison rapide',
     
     // Product page
     duration: 'Durée d\'abonnement',
