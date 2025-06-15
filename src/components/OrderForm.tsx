@@ -72,31 +72,32 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
     setIsSubmitting(true);
     
     try {
-      // Match the exact column names in your Google Sheet
-      const formDataToSend = new FormData();
-      formDataToSend.append('mathematicaTimestamp', new Date().toISOString());
-      formDataToSend.append('Product Name', product.name);
-      formDataToSend.append('Duration', formData.selectedDuration);
-      formDataToSend.append('Full Name', formData.fullName);
-      formDataToSend.append('Phone Number', formData.phoneNumber);
-      formDataToSend.append('Email', formData.email || '');
-
-      console.log('Submitting order to Google Sheets:', {
-        mathematicaTimestamp: new Date().toISOString(),
+      // Send as URL-encoded form data instead of FormData
+      const orderData = {
+        'mathematicaTimestamp': new Date().toISOString(),
         'Product Name': product.name,
         'Duration': formData.selectedDuration,
         'Full Name': formData.fullName,
         'Phone Number': formData.phoneNumber,
-        'Email': formData.email
-      });
+        'Email': formData.email || ''
+      };
+
+      console.log('Submitting order to Google Sheets:', orderData);
+
+      // Convert to URL-encoded string
+      const formBody = Object.keys(orderData).map(key => 
+        encodeURIComponent(key) + '=' + encodeURIComponent(orderData[key as keyof typeof orderData])
+      ).join('&');
       
       const response = await fetch('https://script.google.com/macros/s/AKfycbzpAjrdd2CVK6e-qC5noIH1OJZnGrJYcImoWqzWSYCeKHRWQkJbl8OieCgBTHGxLvY/exec', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
         mode: 'no-cors',
-        body: formDataToSend
+        body: formBody
       });
       
-      // With no-cors mode, we can't check response status, so we assume success
       console.log('Order submitted successfully');
       navigate('/thank-you');
       
