@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { products } from '@/data/products';
@@ -23,6 +23,7 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { t, dir } = useLanguage();
   const { toast } = useToast();
+  const orderFormRef = useRef<HTMLDivElement>(null);
   
   const product = products.find(p => p.id === parseInt(id || ''));
   
@@ -34,6 +35,16 @@ const ProductDetail = () => {
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Auto-scroll to order form on page load
+  useEffect(() => {
+    if (orderFormRef.current) {
+      orderFormRef.current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }, []);
 
   if (!product) {
     return (
@@ -165,7 +176,7 @@ const ProductDetail = () => {
               </Card>
             </div>
 
-            <div>
+            <div ref={orderFormRef}>
               <Card>
                 <CardHeader>
                   <CardTitle className="text-2xl text-foreground">{t('orderForm')}</CardTitle>
