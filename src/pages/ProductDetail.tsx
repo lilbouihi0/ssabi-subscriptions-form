@@ -84,21 +84,22 @@ const ProductDetail = () => {
     setIsSubmitting(true);
     
     try {
-      // Create a more structured payload for Google Sheets
+      // Match the exact column names in your Google Sheet
       const formDataToSend = new FormData();
-      formDataToSend.append('productName', product.name);
-      formDataToSend.append('duration', formData.selectedDuration);
-      formDataToSend.append('fullName', formData.fullName);
-      formDataToSend.append('phoneNumber', formData.phoneNumber);
-      formDataToSend.append('email', formData.email || '');
-      formDataToSend.append('timestamp', new Date().toISOString());
+      formDataToSend.append('mathematicaTimestamp', new Date().toISOString());
+      formDataToSend.append('Product Name', product.name);
+      formDataToSend.append('Duration', formData.selectedDuration);
+      formDataToSend.append('Full Name', formData.fullName);
+      formDataToSend.append('Phone Number', formData.phoneNumber);
+      formDataToSend.append('Email', formData.email || '');
 
       console.log('Submitting order to Google Sheets:', {
-        productName: product.name,
-        duration: formData.selectedDuration,
-        fullName: formData.fullName,
-        phoneNumber: formData.phoneNumber,
-        email: formData.email
+        mathematicaTimestamp: new Date().toISOString(),
+        'Product Name': product.name,
+        'Duration': formData.selectedDuration,
+        'Full Name': formData.fullName,
+        'Phone Number': formData.phoneNumber,
+        'Email': formData.email
       });
       
       const response = await fetch('https://script.google.com/macros/s/AKfycbzpAjrdd2CVK6e-qC5noIH1OJZnGrJYcImoWqzWSYCeKHRWQkJbl8OieCgBTHGxLvY/exec', {
