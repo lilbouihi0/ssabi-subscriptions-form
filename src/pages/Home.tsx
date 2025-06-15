@@ -8,7 +8,7 @@ const Home = () => {
   } = useLanguage();
   return <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="gradient-morocco py-24 text-white bg-slate-300">
+      <section className="gradient-morocco py-24 text-white bg-slate-300 \nEnhance multi design of this section">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
             {t('welcome')}
