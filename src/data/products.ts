@@ -38,9 +38,10 @@ export const products: Product[] = [
     name: "Spotify Premium",
     provider: "Spotify",
     durations: [
-      { duration: "3 Months", price: "60 MAD" },
-      { duration: "6 Months", price: "100 MAD" },
-      { duration: "12 Months", price: "150 MAD" }
+      { duration: "1 Months", price: "20 MAD" },
+      { duration: "3 Months", price: "40 MAD" },
+      { duration: "6 Months", price: "60 MAD" },
+      { duration: "12 Months", price: "100 MAD" }
     ],
     description: "Ad-free music, offline playback, and unlimited skips.",
     features: [
