@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Product } from '@/data/products';
 import { useNavigate } from 'react-router-dom';
+import { useMetaPixel } from '@/hooks/use-meta-pixel';
 
 interface ProductCardProps {
   product: Product;
@@ -13,6 +14,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { t, dir } = useLanguage();
   const navigate = useNavigate();
+  const { trackViewContent } = useMetaPixel();
 
   const lowestPrice = product.durations.reduce((min, duration) => {
     const price = parseInt(duration.price.replace(/\D/g, ''));
@@ -53,7 +55,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <CardFooter className="p-6 pt-0">
         <Button 
           className="w-full gradient-morocco hover:opacity-90 transition-opacity"
-          onClick={() => navigate(`/product/${product.id}`)}
+          onClick={() => {
+            // Track when user clicks to view product details
+            trackViewContent({
+              content_name: product.name,
+              content_category: product.category || 'subscription',
+              content_ids: [product.id.toString()],
+              content_type: 'product',
+              value: lowestPrice,
+              currency: 'MAD'
+            });
+            navigate(`/product/${product.id}`);
+          }}
         >
           {t('viewMore')}
         </Button>

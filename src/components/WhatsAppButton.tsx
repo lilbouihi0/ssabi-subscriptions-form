@@ -3,14 +3,21 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useMetaPixel } from '@/hooks/use-meta-pixel';
 
 const WhatsAppButton = () => {
   const { t } = useLanguage();
+  const { trackContact } = useMetaPixel();
   
   const whatsappNumber = '212614566647';
   const message = encodeURIComponent('مرحبا، أريد الاستفسار عن خدماتكم');
 
   const handleWhatsAppClick = () => {
+    // Track contact event when user clicks WhatsApp
+    trackContact({
+      content_name: 'WhatsApp Contact'
+    });
+    
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
   };
 

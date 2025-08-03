@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Check, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useMetaPixel } from '@/hooks/use-meta-pixel';
+import { prepareAdvancedMatching } from '@/lib/pixel-utils';
 import SimilarProducts from '@/components/SimilarProducts';
 
 interface FormData {
@@ -23,6 +25,7 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { t, dir } = useLanguage();
   const { toast } = useToast();
+  const { trackViewContent, trackInitiateCheckout, trackLead } = useMetaPixel();
   const orderFormRef = useRef<HTMLDivElement>(null);
   
   const product = products.find(p => p.id === parseInt(id || ''));
@@ -36,7 +39,7 @@ const ProductDetail = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Auto-scroll to order form on page load
+  // Auto-scroll to order form on page load and track ViewContent
   useEffect(() => {
     if (orderFormRef.current) {
       orderFormRef.current.scrollIntoView({ 
@@ -44,7 +47,22 @@ const ProductDetail = () => {
         block: 'start'
       });
     }
-  }, []);
+    
+    // Track ViewContent event when product page loads
+    if (product) {
+      const selectedPrice = product.durations[0]?.price || '';
+      const priceValue = parseFloat(selectedPrice.replace(/[^\d.]/g, '')) || 0;
+      
+      trackViewContent({
+        content_name: product.name,
+        content_category: product.category || 'subscription',
+        content_ids: [product.id.toString()],
+        content_type: 'product',
+        value: priceValue,
+        currency: 'MAD'
+      });
+    }
+  }, [product, trackViewContent]);
 
   if (!product) {
     return (
@@ -59,6 +77,24 @@ const ProductDetail = () => {
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Track InitiateCheckout when user selects a duration
+    if (field === 'selectedDuration' && value && product) {
+      const selectedDuration = product.durations.find(d => d.duration === value);
+      if (selectedDuration) {
+        const priceValue = parseFloat(selectedDuration.price.replace(/[^\d.]/g, '')) || 0;
+        
+        trackInitiateCheckout({
+          content_name: product.name,
+          content_category: product.category || 'subscription',
+          content_ids: [product.id.toString()],
+          content_type: 'product',
+          value: priceValue,
+          currency: 'MAD',
+          num_items: 1
+        });
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -115,6 +151,27 @@ const ProductDetail = () => {
       
       // With no-cors mode, we can't check response status, so we assume success
       console.log('Order submitted successfully');
+      
+      // Track Lead event when form is successfully submitted
+      const selectedDuration = product.durations.find(d => d.duration === formData.selectedDuration);
+      if (selectedDuration) {
+        const priceValue = parseFloat(selectedDuration.price.replace(/[^\d.]/g, '')) || 0;
+        
+        // Prepare advanced matching data
+        const advancedMatching = prepareAdvancedMatching({
+          email: formData.email,
+          phoneNumber: formData.phoneNumber,
+          fullName: formData.fullName
+        });
+        
+        trackLead({
+          content_name: product.name,
+          content_category: product.category || 'subscription',
+          value: priceValue,
+          currency: 'MAD'
+        }, advancedMatching);
+      }
+      
       navigate('/thank-you');
       
     } catch (error) {
