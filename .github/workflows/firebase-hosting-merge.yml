@@ -2,24 +2,21 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Hosting on merge
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - run: npm ci
+        working-directory: ssabi-subscriptions-form
+
       - run: npm run build
+        working-directory: ssabi-subscriptions-form
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -27,3 +24,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HSSABI_AF811 }}
           channelId: live
           projectId: hssabi-af811
+          entryPoint: ssabi-subscriptions-form
