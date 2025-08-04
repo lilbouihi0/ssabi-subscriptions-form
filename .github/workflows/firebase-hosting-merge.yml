@@ -13,10 +13,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - run: npm ci
-        working-directory: ssabi-subscriptions-form
 
       - run: npm run build
-        working-directory: ssabi-subscriptions-form
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -24,4 +22,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HSSABI_AF811 }}
           channelId: live
           projectId: hssabi-af811
-          entryPoint: ssabi-subscriptions-form
+          entryPoint: .
