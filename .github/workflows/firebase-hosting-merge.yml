@@ -12,11 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: npm ci
-        working-directory: ssabi-subscriptions-form
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
 
-      - run: npm run build
-        working-directory: ssabi-subscriptions-form
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -24,4 +30,3 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HSSABI_AF811 }}
           channelId: live
           projectId: hssabi-af811
-          entryPoint: ssabi-subscriptions-form
