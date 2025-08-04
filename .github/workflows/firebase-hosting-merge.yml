@@ -30,3 +30,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HSSABI_AF811 }}
           channelId: live
           projectId: hssabi-af811
+          entryPoint: .
