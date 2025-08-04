@@ -9,7 +9,7 @@ const WhatsAppButton = () => {
   const { t } = useLanguage();
   const { trackContact } = useMetaPixel();
   
-  const whatsappNumber = '212614566647';
+  const whatsappNumber = '212784542581';
   const message = encodeURIComponent('مرحبا، أريد الاستفسار عن خدماتكم');
 
   const handleWhatsAppClick = () => {
